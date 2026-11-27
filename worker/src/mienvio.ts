@@ -30,11 +30,11 @@ export interface Tarifa {
   precio: number | null;
   moneda: string;
   ocurre: boolean;
-  detalle_precio?: any;
 }
 
 function precioDe(r: any): number | null {
-  const p = r?.pricing?.total ?? r?.pricing?.amount ?? r?.amount;
+  // Mienvío manda el precio en amount.total (la documentación dice pricing.total); se aceptan ambos.
+  const p = r?.pricing?.total ?? r?.amount?.total ?? r?.pricing?.amount ?? r?.amount;
   const n = typeof p === "string" ? parseFloat(p) : p;
   return typeof n === "number" && isFinite(n) ? n : null;
 }
@@ -56,7 +56,6 @@ export async function cotizar(env: Env, from: Direccion, to: Direccion, paquete:
         precio: precioDe(t),
         moneda: t.currency || "MXN",
         ocurre: !!t.is_ocurre,
-        ...(precioDe(t) === null ? { detalle_precio: { pricing: t.pricing ?? null, amount: t.amount ?? null, claves: Object.keys(t) } } : {}),
       });
     }
   }
@@ -104,7 +103,7 @@ export function datosEnvio(s: any) {
     estado: s?.type ?? null,
     paqueteria: s?.rate?.provider ?? null,
     servicio: s?.rate?.service_name ?? s?.rate?.service ?? null,
-    costo: s?.pricing?.total ?? s?.amount ?? null,
+    costo: precioDe(s),
     guia: label.tracking_number ?? s?.tracking_number ?? null,
     rastreo_url: label.mienvio_tracking_url ?? s?.mienvio_tracking_url ?? null,
     etiqueta_url: label.label_url ?? s?.label_url ?? null,
