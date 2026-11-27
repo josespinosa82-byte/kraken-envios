@@ -15,7 +15,7 @@ function igualSeguro(a: string, b: string): boolean {
 }
 
 async function agente(req: Request, env: Env, ruta: string): Promise<Response> {
-  if (!igualSeguro(req.headers.get("X-Agente-Token") || "", env.AGENT_TOKEN || "")) {
+  if (!igualSeguro((req.headers.get("X-Agente-Token") || "").trim(), (env.AGENT_TOKEN || "").trim())) {
     return new Response("No autorizado", { status: 401 });
   }
   if (ruta === "/agente/siguiente" && req.method === "GET") {
@@ -41,7 +41,12 @@ export default {
     const url = new URL(req.url);
     const ruta = url.pathname.replace(/\/+$/, "") || "/";
     if (ruta.startsWith("/mcp/")) {
-      if (!env.MCP_SECRET || env.MCP_SECRET.length < 24 || !igualSeguro(ruta.slice(5), env.MCP_SECRET)) {
+      const esperado = (env.MCP_SECRET || "").trim();
+      let recibido = ruta.slice(5);
+      try { recibido = decodeURIComponent(recibido); } catch { /* se deja como viene */ }
+      recibido = recibido.trim();
+      if (esperado.length < 24 || !igualSeguro(recibido, esperado)) {
+        console.log("mcp 404", { largo_esperado: esperado.length, largo_recibido: recibido.length });
         return new Response("No encontrado", { status: 404 });
       }
       return servirMcp(req, env);
