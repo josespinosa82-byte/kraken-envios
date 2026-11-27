@@ -6,7 +6,12 @@ function auth(env: Env): string {
 }
 
 async function woo(env: Env, path: string, init: RequestInit = {}): Promise<any> {
-  const url = `${env.WOO_URL.replace(/\/+$/, "")}/wp-json/wc/v3${path}`;
+  const base = (env.WOO_URL || "").trim().replace(/\/+$/, "");
+  // Nunca mostrar el valor en errores: si alguien pegó una clave aquí por error, no debe filtrarse.
+  if (!/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}$/i.test(base)) {
+    throw new Error("El secreto WOO_URL no es una dirección válida. Debe ser exactamente https://kraken-sport.com");
+  }
+  const url = `${base}/wp-json/wc/v3${path}`;
   const res = await fetch(url, {
     ...init,
     headers: { Authorization: auth(env), "Content-Type": "application/json", ...(init.headers || {}) },
