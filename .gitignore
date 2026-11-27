@@ -1,0 +1,8 @@
+node_modules/
+.wrangler/
+.dev.vars
+agente/config.json
+agente/agente.log
+agente/__pycache__/
+*.zpl
+*.vista.png

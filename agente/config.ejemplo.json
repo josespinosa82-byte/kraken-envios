@@ -1,0 +1,8 @@
+{
+  "servidor": "https://kraken-envios.TU-SUBDOMINIO.workers.dev",
+  "token": "PEGA_AQUI_EL_AGENT_TOKEN",
+  "impresora": "ZDesigner ZD420-203dpi ZPL",
+  "tipo_medio": "D",
+  "oscuridad": 0,
+  "segundos": 5
+}

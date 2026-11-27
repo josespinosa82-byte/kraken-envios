@@ -1,0 +1,28 @@
+name = "kraken-envios"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+# Revisa guías en espera cada 2 minutos
+[triggers]
+crons = ["*/2 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "kraken-envios"
+database_id = "PEGAR_AQUI_EL_ID_DE_LA_BASE_D1"
+
+[vars]
+# Producción. Para pruebas sin cobro usa: https://dev-sandbox.mienvio.mx/api/v2
+MIENVIO_BASE = "https://production.mienvio.mx/api/v2"
+
+# "si" = el número de guía y el rastreo le llegan al cliente por correo (nota de pedido de WooCommerce)
+NOTA_RASTREO_CLIENTE = "si"
+
+# La dirección de origen (ORIGEN_JSON) va como SECRETO en Cloudflare, no aquí: el repositorio es público.
+
+# Caja estándar del Kraken Kit: peso en kg, medidas en cm, valor declarado en MXN.
+# description / fiscal_code (clave SAT del producto) / package_type los pide Mienvío para pagar la guía.
+PAQUETE_JSON = '''
+{"weight": 3, "length": 31, "width": 30, "height": 9, "declared_value": 3700,
+ "description": "Portabicicletas para auto", "fiscal_code": "REVISAR", "package_type": "box"}
+'''
