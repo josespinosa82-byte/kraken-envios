@@ -26,3 +26,7 @@ PAQUETE_JSON = '''
 {"weight": 3, "length": 31, "width": 30, "height": 9, "declared_value": 3700,
  "description": "Portabicicletas para auto", "fiscal_code": "25174105", "package_type": "box"}
 '''
+
+# Registros visibles en Cloudflare → Workers → kraken-envios → Observability
+[observability]
+enabled = true
