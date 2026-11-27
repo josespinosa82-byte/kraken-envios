@@ -30,6 +30,7 @@ export interface Tarifa {
   precio: number | null;
   moneda: string;
   ocurre: boolean;
+  detalle_precio?: any;
 }
 
 function precioDe(r: any): number | null {
@@ -55,6 +56,7 @@ export async function cotizar(env: Env, from: Direccion, to: Direccion, paquete:
         precio: precioDe(t),
         moneda: t.currency || "MXN",
         ocurre: !!t.is_ocurre,
+        ...(precioDe(t) === null ? { detalle_precio: { pricing: t.pricing ?? null, amount: t.amount ?? null, claves: Object.keys(t) } } : {}),
       });
     }
   }
