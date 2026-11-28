@@ -9,7 +9,7 @@ crons = ["*/2 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "kraken-envios"
-database_id = "cd19dac0-fbe8-4d24-bc3a-a20d8dcd8c1e"
+database_id = "a44cee48-35b1-45f0-bc72-1a7b1ce20db3"
 
 [vars]
 # Producción. Para pruebas sin cobro usa: https://dev-sandbox.mienvio.mx/api/v2
